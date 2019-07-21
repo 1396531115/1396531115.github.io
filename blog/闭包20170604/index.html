@@ -1,0 +1,965 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #000; /*进度条颜色*/
+        height: 2px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #ccc, 0 0 5px     #ccc; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #000;    /*上边框颜色*/
+        border-left-color: #000;    /*左边框颜色*/
+    }
+</style>
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="js,闭包," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;emsp;&amp;emsp;闭包是指有权访问另一个函数作用域中的变量的函数，创建闭包的常见方式，就是在一个函数内部创建另一个函数。&amp;emsp;&amp;emsp;之所以一个内部的函数可以访问其外部的变量，而且在其被返回或是调用时还可以访问，是因为这个内部函数的作用域链中包含外部函数的作用域。    知识储备在了解闭包之前，先要熟悉以下几点：&amp;emsp;&amp;emsp;1. 首先要理解执行环境，执行环境定义了变量">
+<meta name="keywords" content="js,闭包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于js闭包">
+<meta property="og:url" content="https://kongchenglc.github.io/blog/闭包20170604/index.html">
+<meta property="og:site_name" content="Kongcheng.LC">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;闭包是指有权访问另一个函数作用域中的变量的函数，创建闭包的常见方式，就是在一个函数内部创建另一个函数。&amp;emsp;&amp;emsp;之所以一个内部的函数可以访问其外部的变量，而且在其被返回或是调用时还可以访问，是因为这个内部函数的作用域链中包含外部函数的作用域。    知识储备在了解闭包之前，先要熟悉以下几点：&amp;emsp;&amp;emsp;1. 首先要理解执行环境，执行环境定义了变量">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5569096-8b7c2b7c3f54fb21.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5569096-3dae06faf9dc29d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-06-23T03:34:07.909Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于js闭包">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;闭包是指有权访问另一个函数作用域中的变量的函数，创建闭包的常见方式，就是在一个函数内部创建另一个函数。&amp;emsp;&amp;emsp;之所以一个内部的函数可以访问其外部的变量，而且在其被返回或是调用时还可以访问，是因为这个内部函数的作用域链中包含外部函数的作用域。    知识储备在了解闭包之前，先要熟悉以下几点：&amp;emsp;&amp;emsp;1. 首先要理解执行环境，执行环境定义了变量">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/5569096-8b7c2b7c3f54fb21.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://kongchenglc.github.io/blog/闭包20170604/"/>
+
+
+
+
+
+  <title>关于js闭包 | Kongcheng.LC</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kongcheng.LC</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">LC的博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            时间轴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://kongchenglc.github.io/blog/闭包20170604/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kongcheng.LC">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kongcheng.LC">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                关于js闭包
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-04T22:20:33+08:00">
+                2017-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+
+
+          
+          &nbsp; | &nbsp;
+          <span id="/blog/闭包20170604/"class="leancloud_visitors" data-flag-title="关于js闭包">
+                   &nbsp;阅读次数
+                  </span>
+          
+
+
+
+          
+            
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>&emsp;&emsp;闭包是指有权访问另一个函数作用域中的变量的函数，创建闭包的常见方式，就是在一个函数内部创建另一个函数。<br>&emsp;&emsp;之所以一个内部的函数可以访问其外部的变量，而且在其被返回或是调用时还可以访问，是因为这个内部函数的作用域链中包含外部函数的作用域。  </p>
+</blockquote>
+<h2 id="知识储备"><a href="#知识储备" class="headerlink" title="知识储备"></a>知识储备</h2><p>在了解闭包之前，先要熟悉以下几点：<br>&emsp;&emsp;1. 首先要理解<strong>执行环境</strong>，执行环境定义了变量或函数有权访问的其他数据。<br>&emsp;&emsp;2. 每个执行环境都有一个与之关联的<strong>变量对象</strong>，环境中定义的所有变量和函数都保存在这个对象中。<br>&emsp;&emsp;3. 每个函数都有自己的执行环境，当执行流进入一个函数时，函数的环境就会被推入到一个环境栈中。而在函数执行之后，栈将其环境弹出，把控制权返回给之前的执行环境。<a id="more"></a><br>&emsp;&emsp;4. 当某个函数被调用时，会创建一个执行环境及其相应的<strong>作用域链</strong>。然后使用<code>arguments</code>和其他命名参数的值来初始化函数的活动对象。在函数中，活动对象作为变量对象使用（<em>作用域链是由每层的变量对象链起来的</em>）。<br>&emsp;&emsp;5. 在作用域链中，外部函数的活动对象始终处于第二位，外部函数的外部函数的活动对象处于第三位，直到作用域链终点即全局执行环境。<br>&emsp;&emsp;6. 作用域链的本质是一个指向变量对象的指针列表，它只引用但不实际包含变量对象。  </p>
+<hr>
+<h2 id="1-一般情况下"><a href="#1-一般情况下" class="headerlink" title="1.一般情况下"></a>1.一般情况下</h2><p>&emsp;&emsp;不谈论闭包，一般的，从在全局执行环境创建一个函数开始。<br>&emsp;&emsp;在创建一个函数时，会创建一个预先包含全局变量对象的作用域链，这个作用域链被保存在函数内部的<code>[[Scope]]</code>。<br>&emsp;&emsp;然后执行流进入这个函数，函数的执行环境被压入环境栈中，此函数执行环境的活动对象作为变量对象被创建并推入执行环境作用域链的前端。<br>&emsp;&emsp;对这个例子中的函数而言，其作用域链中包含两个变量对象：本地活动对象和全局变量对象。<br>&emsp;&emsp;无论在什么时候在函数中访问变量时，会从作用域链搜索变量名。<br>&emsp;&emsp;一般情况下，函数执行完，局部活动对象就会被销毁，内存中仅有全局作用域（里边只有全局执行环境的变量对象）。<br>&emsp;&emsp;以下面这段代码为例：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">compare</span> (<span class="params">value1, value2</span>) </span>&#123;         </div><div class="line"><span class="comment">//创建一个预先包含全局变量对象的作用域链，保存在[[Scope]]</span></div><div class="line">    <span class="keyword">if</span> (value1 &lt; value2) &#123;</div><div class="line"><span class="comment">//访问函数变量时，即在代码最后一条语句执行过程中，会从作用域链前端开始搜索变量名</span></div><div class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (value1 &gt; value2) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> result = compare(<span class="number">5</span>, <span class="number">10</span>);</div><div class="line"><span class="comment">//执行流进入函数时，compare的执行环境压入环境栈</span></div><div class="line"><span class="comment">//compare执行环境的活动对象作为变量对象接到作用域链的前端</span></div><div class="line"><span class="comment">//函数执行完，compare执行环境弹出栈，compare活动对象销毁</span></div></pre></td></tr></table></figure></p>
+<p>如图，作用域链从0开始向后查找:<br><img src="http://upload-images.jianshu.io/upload_images/5569096-8b7c2b7c3f54fb21.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="闭包1.1"></p>
+<hr>
+<h2 id="2-产生闭包的情况下"><a href="#2-产生闭包的情况下" class="headerlink" title="2.产生闭包的情况下"></a>2.产生闭包的情况下</h2><p>如下是一个以属性名作为参数，按其属性的值对数据进行排序的函数：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComparisonFunction</span>(<span class="params">propertyName</span>) </span>&#123;     </div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">object1,object2</span>)</span>&#123;         <span class="comment">//返回一个匿名函数</span></div><div class="line">        <span class="keyword">var</span> value1=object1[propertyName];</div><div class="line">        <span class="keyword">var</span> value2=object2[propertyName];</div><div class="line">        <span class="keyword">if</span>(value1&lt;value2)&#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (value1&gt;value2)&#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> data=[&#123;<span class="attr">name</span>:<span class="string">"Zachary"</span>,<span class="attr">age</span>:<span class="number">28</span>&#125;,&#123;<span class="attr">name</span>:<span class="string">"Nicholas"</span>,<span class="attr">age</span>:<span class="number">29</span>&#125;];</div><div class="line">data.sort(createComparisonFunction(<span class="string">"name"</span>));</div><div class="line"><span class="built_in">console</span>.log(data[<span class="number">0</span>]);           <span class="comment">//Object &#123;name: "Nicholas", age: 29&#125;</span></div><div class="line">data.sort(createComparisonFunction(<span class="string">"age"</span>));</div><div class="line"><span class="built_in">console</span>.log(data[<span class="number">0</span>]);           <span class="comment">//Object &#123;name: "Zachary", age: 28&#125;</span></div></pre></td></tr></table></figure></p>
+<p><code>createComparisonFunction()</code>函数和返回的匿名函数的作用域链如下图所示：<br><img src="http://upload-images.jianshu.io/upload_images/5569096-3dae06faf9dc29d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="闭包2.1"></p>
+<blockquote>
+<p>&emsp;&emsp;在匿名函数从<code>createComparisonFunction()</code>中被返回后，它的作用域链被初始化为包含<code>createComparisonFunction()</code>函数的活动对象和全局变量对象。这样，匿名函数就可以访问在<code>createComparisonFunction()</code>中定义的所有变量。</p>
+</blockquote>
+<p>更为<strong>重要</strong>的是:</p>
+<blockquote>
+<p>&emsp;&emsp;<code>createComparisonFunction()</code>函数在执行完毕后，其他活动对象也不会被销毁，因为匿名函数的作用域链仍然在引用这个活动对象。<br>&emsp;&emsp;当<code>createComparisonFunction()</code>函数返回后，其执行环境的作用域链会被销毁，但它的活动对象仍然会留在内存中；直到匿名函数被销毁,<code>createComparisonFunction()</code>的活动对象才会被销毁。</p>
+</blockquote>
+<p>&emsp;&emsp;例如以下代码，返回的匿名函数被保存在变量<code>compareNames</code>中，通过将<code>compareNames</code>设置为<code>null</code>来解除对匿名函数的引用，解除引用之后垃圾回收例程将会清除该匿名函数，随之该匿名函数的作用域链也会被销毁，则其作用域链上的其他作用域也会安全的销毁（全局作用域除外）。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> compareNames = createComparisonFunction(<span class="string">"name"</span>);</div><div class="line"><span class="keyword">var</span> result = compareNames(&#123; <span class="attr">name</span>: <span class="string">"Nicholas"</span> &#125;, &#123; <span class="attr">name</span>: <span class="string">"Greg"</span> &#125;);</div><div class="line">compareNames = <span class="literal">null</span>;</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="3-经典的闭包实例"><a href="#3-经典的闭包实例" class="headerlink" title="3.经典的闭包实例"></a>3.经典的闭包实例</h2><p>在学习闭包的时候我们很容易见到以下代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>; i&lt;=<span class="number">5</span>; i++) &#123;         </div><div class="line">    setTimeout( <span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(i);</div><div class="line">    &#125;, i*<span class="number">1000</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;如果不理解闭包，很容易认为这段代码输出的是<code>1,2,3,4,5</code>，每隔一秒输出一个。但是其实是以每秒一次的频率输出<code>5</code>次<code>6</code>。因为延迟函数的回调会在循环执行完之后再执行（即使<code>setTimeout</code>的第二个参数为<code>0</code>，由于<strong>事件循环</strong>的机制，回调函数依然会在循环结束后执行）。</p>
+<blockquote>
+<p>之所以我们错误的认为它会输出<code>1~5</code>，是因为我们自己假设每个迭代在运行时都会给自己“捕获”一个<code>i</code>的副本。<strong>但是</strong>，根据作用域的工作原理，实际情况是尽管循环中五个函数是在各个迭代中分别定义的，但是它们都被封闭在同一个全局作用域中，即实际上只有一个<code>i</code>。</p>
+</blockquote>
+<p>下面我们尝试将其结果修改为输出<code>1~5</code>。那么下边的代码行不行呢？<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>; i&lt;=<span class="number">5</span>; i++) &#123;         </div><div class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        setTimeout( <span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="built_in">console</span>.log(i);</div><div class="line">        &#125;, i*<span class="number">1000</span>);</div><div class="line">    &#125;)();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;答案是不行。确实，上边的代码在每个迭代中都添加了一个独有的作用域，但是这个作用域是空的，没有对于<code>i</code>的定义，所以每次查找<code>i</code>的时候还是会向上查找，找到全局作用域中的<code>i</code>并输出。在循环执行完之后的<code>i</code>是<code>6</code>，所以依然每次输出<code>6</code>。现在我们为每个小的作用域添加一个变量，其值为循环时当前的<code>i</code>的值。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>; i&lt;=<span class="number">5</span>; i++) &#123;         </div><div class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params">i</span>)</span>&#123;</div><div class="line">        setTimeout( <span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="built_in">console</span>.log(i);</div><div class="line">        &#125;, i*<span class="number">1000</span>);</div><div class="line">    &#125;)(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;现在的结果已经和理想的情况一样了。<code>ES6</code>拥有更简洁的方法创建一个封闭的作用域：<code>let</code>，它会使一个块转换成一个可以被关闭的作用域（对于<code>let</code>定义的变量来说块就是封闭的）。所以你可以写成下边的代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">1</span>; i&lt;=<span class="number">5</span>; i++) &#123;         </div><div class="line">    setTimeout( <span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(i);</div><div class="line">    &#125;, i*<span class="number">1000</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="4-利用闭包创建模块"><a href="#4-利用闭包创建模块" class="headerlink" title="4.利用闭包创建模块"></a>4.利用闭包创建模块</h2><p>我们看以下代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">CoolModule</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> something = <span class="string">"cool"</span>;</div><div class="line">    <span class="keyword">var</span> another = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">doSomething</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log( something );</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">doAnother</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log( another.join( <span class="string">" ! "</span> ) );</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">        <span class="attr">doSomething</span>: doSomething,</div><div class="line">        <span class="attr">doAnother</span>: doAnother</div><div class="line">    &#125;;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> foo = CoolModule();</div><div class="line">foo.doSomething();               <span class="comment">//cool</span></div><div class="line">foo.doAnother();                 <span class="comment">//1 ! 2 ! 3</span></div></pre></td></tr></table></figure></p>
+<p>这个模式就被称为模块，最常见的实现模块模式的方法通常被称为<em>模块暴露</em>，这里展示其变体。</p>
+<blockquote>
+<p>模块模式需要具备两个必要条件：<br>&emsp;&emsp;1.必须有外部的封闭函数（<code>CoolModule()</code>），该函数必须至少被调用一次（每次调用都会创建一个新的模块实例）。<br>&emsp;&emsp;2.封闭函数必须返回至少一个内部函数，这样内部函数才能在私有作用域中形成闭包，并且可以访问或者修改私有的状态。</p>
+</blockquote>
+<hr>
+<p>&emsp;&emsp;以上就是我在学习闭包时的一些总结，欢迎讨论。</p>
+<blockquote>
+<p>参考资料：《JavaScript高级程序设计》<br>&emsp;&emsp;&emsp;&emsp;&emsp;《你不知道的JavaScript》</p>
+</blockquote>
+<p><br><br></p>
+<p><div id="container"></div></p>
+<p><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"></p>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  owner: 'kongchenglc',
+  repo: 'kongchenglc.github.io',
+  oauth: {
+    client_id: '7dbff17e5f4c6ed576df',
+    client_secret: '4dfa357fe3a76e38ce1fd63eb285b5f21307106e',
+  },
+})
+gitment.render('container');
+</script>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      Kongcheng.LC
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://kongchenglc.github.io/blog/闭包20170604/" title="关于js闭包">https://kongchenglc.github.io/blog/闭包20170604/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" <i class="fa fa-tag"></i> js</a>
+          
+            <a href="/tags/闭包/" <i class="fa fa-tag"></i> 闭包</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/贪吃蛇20170613/" rel="next" title="20行代码的贪吃蛇">
+                <i class="fa fa-chevron-left"></i> 20行代码的贪吃蛇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/js继承20170503/" rel="prev" title="js继承">
+                js继承 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Kongcheng.LC" />
+          <p class="site-author-name" itemprop="name">Kongcheng.LC</p>
+           
+              <p class="site-description motion-element" itemprop="description">人海风起云涌</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kongchenglc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/5631374462" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#知识储备"><span class="nav-text">知识储备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-一般情况下"><span class="nav-text">1.一般情况下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-产生闭包的情况下"><span class="nav-text">2.产生闭包的情况下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-经典的闭包实例"><span class="nav-text">3.经典的闭包实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-利用闭包创建模块"><span class="nav-text">4.利用闭包创建模块</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kongcheng.LC</span>
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <!-- custom analytics part create by xiamo -->
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("8k8H28J3rJHXx7QxBhc9lPRc-gzGzoHsz", "46bUJ8SMuOgdD44evm6nGjRd");</script>
+<script>
+function showTime(Counter) {
+  var query = new AV.Query(Counter);
+  $(".leancloud_visitors").each(function() {
+    var url = $(this).attr("id").trim();
+    query.equalTo("url", url);
+    query.find({
+      success: function(results) {
+        if (results.length == 0) {
+          var content = '0 ' + $(document.getElementById(url)).text();
+          $(document.getElementById(url)).text(content);
+          return;
+        }
+        for (var i = 0; i < results.length; i++) {
+          var object = results[i];
+          var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+          $(document.getElementById(url)).text(content);
+        }
+      },
+      error: function(object, error) {
+        console.log("Error: " + error.code + " " + error.message);
+      }
+    });
+
+  });
+}
+
+function addCount(Counter) {
+  var Counter = AV.Object.extend("Counter");
+  url = $(".leancloud_visitors").attr('id').trim();
+  title = $(".leancloud_visitors").attr('data-flag-title').trim();
+  var query = new AV.Query(Counter);
+  query.equalTo("url", url);
+  query.find({
+    success: function(results) {
+      if (results.length > 0) {
+        var counter = results[0];
+        counter.fetchWhenSave(true);
+        counter.increment("time");
+        counter.save(null, {
+          success: function(counter) {
+            var content =  counter.get('time') + ' ' + $(document.getElementById(url)).text();
+            $(document.getElementById(url)).text(content);
+          },
+          error: function(counter, error) {
+            console.log('Failed to save Visitor num, with error message: ' + error.message);
+          }
+        });
+      } else {
+        var newcounter = new Counter();
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 1);
+        newcounter.save(null, {
+          success: function(newcounter) {
+              console.log("newcounter.get('time')="+newcounter.get('time'));
+            var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
+            $(document.getElementById(url)).text(content);
+          },
+          error: function(newcounter, error) {
+            console.log('Failed to create');
+          }
+        });
+      }
+    },
+    error: function(error) {
+      console.log('Error:' + error.code + " " + error.message);
+    }
+  });
+}
+$(function() {
+  var Counter = AV.Object.extend("Counter");
+  if ($('.leancloud_visitors').length == 1) {
+    addCount(Counter);
+  } else if ($('.post-title-link').length > 1) {
+    showTime(Counter);
+  }
+}); 
+</script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</html>
